@@ -10,7 +10,7 @@ How to train the ml algorithms.
 1) Run `pip install -r requirements.txt`.
 1) Run `python get_cdip_features.py 3` to get the data from the CDIP website.
 2) Run `python test_classifiers.py 3` to get the parameters for the machine learning algorithms.
-3) Use the best parameters used and put it in save_files.py. And, then run `python save_files.py 3` to save ml algorithms.
+3) Use the best parameters used and put it in save_files.py. And, then run `python save_files.py 3` to save machine learning algorithms.
 4) Run `python test.py filename` to run testing on the data. Note that the data should be in CDIP format (netcdf).
 
 
