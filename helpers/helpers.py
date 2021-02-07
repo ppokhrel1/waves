@@ -20,7 +20,7 @@ from sklearn.metrics import roc_curve, roc_auc_score, accuracy_score, precision_
 #from subprocess import call
 from sklearn.model_selection import *
 
-import warnings
+#import warnings
 
 import numpy as np
 import scipy.sparse as sp
@@ -33,11 +33,11 @@ from sklearn.utils.extmath import safe_sparse_dot
 from sklearn.utils.validation import check_is_fitted
 from sklearn.metrics.pairwise import pairwise_kernels, KERNEL_PARAMS
 from sklearn.utils.validation import check_non_negative, _deprecate_positional_args
-import warnings
+#import warnings
 import numbers
 import time
-from traceback import format_exc
-from contextlib import suppress
+#from traceback import format_exc
+#from contextlib import suppress
 
 import scipy.sparse as sp
 from joblib import Parallel, delayed
@@ -64,13 +64,6 @@ from multiprocessing import Pool
 
 #register_spark() # register spark backend
 #register()
-chromosomes = "1000100010101010001000000100000000111001100010010100001010110000010001110111110000101000011000001000101000000011111000111111111"
-chromosomes = "1000100010000001010000000111000001000000000000010000001010100100001011000000011110011100011001001100000100001110011110101111100001010110101001000011110101000011111111"
-#def fit_classifier(klass, param, metric, X_train, Y_train, X_validation, Y_validation):
-#    classifier = klass.fit(X_train, Y_train)
-#    Y_predict = classifier.predict(X_validation)
-#    score = metric(Y_validation, Y_predict)
-#    return (param, score)
 
 def fit_classifier(svc_rbf, param, metric, X_train, y_train, X_test, y_test):
 	clas = svc_rbf.set_params(**param)

@@ -1,5 +1,5 @@
 import numpy as np
-import pylab as pl
+#import pylab as pl
 from numpy import fft
 import sys
 

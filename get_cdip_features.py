@@ -3,8 +3,8 @@
 import sys
 
 import joblib
-from ray.util.joblib import register_ray
-register_ray()
+#from ray.util.joblib import register_ray
+#register_ray()
 
 day_ahead = int(sys.argv[1])
 stations = [ '149', '150', '151', '152', '155', '158', '161', '165', 
@@ -20,10 +20,10 @@ deploy = ['01', '02'] # Set deployment number from .nc file
 print("----------------------")
 print("days: " + str(day_ahead) )
 time_length = 2*24*day_ahead
-startdate = "05/21/2018 09:00" # MM/DD/YYYY HH:MM
-enddate = "05/21/2018 10:00" # MM/DD/YYYY HH:MM
-duration  = 30 # Set length of timeseries (minutes)
-qc_level = 2 # Filter data with qc flags above this number 
+#startdate = "05/21/2018 09:00" # MM/DD/YYYY HH:MM
+#enddate = "05/21/2018 10:00" # MM/DD/YYYY HH:MM
+#duration  = 30 # Set length of timeseries (minutes)
+#qc_level = 2 # Filter data with qc flags above this number 
 
 import os
 import netCDF4
@@ -69,17 +69,6 @@ def get_data(stn, deploy):
         Ta = nc.variables['waveTa']
         Psd = nc.variables['wavePeakPSD']
         bandwidth = nc.variables['waveBandwidth']
-        '''
-        mean_ed =[ np.sum(a) for a in nc.variables['waveEnergyDensity'] ]
-        mean_dir = [ np.sum(a) for a in nc.variables['waveMeanDirection'] ]
-        mean_a1 = [ np.sum(a) for a in nc.variables['waveA1Value'] ]
-        mean_a2 = [ np.sum(a) for a in nc.variables['waveA2Value'] ]
-        mean_b1 = [ np.sum(a) for a in nc.variables['waveB1Value'] ]
-        mean_b2 = [ np.sum(a) for a in nc.variables['waveB2Value'] ]
-        mean_spread = [ np.sum(a) for a in nc.variables['waveSpread'] ]
-        mean_m2 = [ np.sum(a) for a in nc.variables['waveM2Value'] ]
-        mean_n2 = [ np.sum(a) for a in nc.variables['waveN2Value'] ]
-        '''
 
         flags_for_30_min = nc.variables['waveFlagPrimary']
 
@@ -182,45 +171,16 @@ def get_data(stn, deploy):
         kurt = [(6-8*m1[a]+2*m2[a])/( (2*(1-m1[a]))**2) for a in range(size) ]
         
         #print(depth)
-        '''     
-        arr_1 = Parallel(n_jobs=-1)(delayed(calculate_N2_neg)(Fq, np.concatenate(([ a1[a] ], [ a2[a] ]), axis=0 ).T, Dmean[a], depth ) for a in range(size) )
-
-        arr_2 = Parallel(n_jobs=-1)(delayed(calculate_N2_pos)(Fq, np.concatenate(([ a1[a] ], [ a2[a] ]), axis=0 ).T, Dmean[a], depth ) for a in range(size) )
-        arr_3 = Parallel(n_jobs=-1)(delayed(free_interaction)(Fq, np.concatenate(([ a1[a] ], [ a2[a] ]), axis=0 ).T ) for a in range(size) )
-# 
-        arr_1 = [[a] for a in arr_1]
-        arr_2 = [[a] for a in arr_2]
-        arr_3 = [[a] for a in arr_3]
-        arr = [np.concatenate((arr_1[a], arr_2[a], arr_3[a]), axis=0 ) for a in range(size) ]
-        '''
 
         arr= [[ dates[a]] for a in range(size) ]
 #arr = arr_1
         arr = [np.concatenate(( [depth], [spread[a]], [ Hs[a] ], [zero_upcross[a] ], [ Tp[a] ], [Psd[a] ], [ Ta[a] , Dp[a] ], ), axis=0) for a in range(size) ]
         arr = [np.concatenate( (arr[a], [skew[a]], [kurt[a]]  )) for a in range(size) ]
-#arr = [np.concatenate((arr[a], [mean_ed[a]], [mean_dir[a]], [mean_a1[a]], [mean_a2[a]], [mean_b1[a]], [mean_b2[a]], [mean_spread[a]], [mean_m2[a]], [mean_n2[a]] ), axis=0) for a in range(size) ]
-#print(len(arr_1))
-#print(len(arr_2))
-#print(len(arr_3))
-# arr_1 = [ [np.mean(a) ] for a in a1[:size] ]
-# arr_2 = [ [np.mean(a) ] for a in a2[:size] ]
-# arr_3 = [ [np.mean(a) ] for a in Dmean[:size] ]
-# arr_4 = [ [np.mean(a) ] for a in b1[:size] ]
-# arr_5 = [ [np.mean(a) ] for a in b2[:size] ]
-# 
-        # arr = [np.concatenate((arr_1[a], arr_2[a], arr_3[a], arr_4[a], arr_5[a]), axis=0 ) for a in range(size) ]
-
-        arr = [np.ndarray.flatten(a) for a in arr]
 
         #arr = [ arr[a] for a in range(len(arr)) if str(flags_for_30_min[a])=='1' ]
 
         y_vals = spread
 
-#all_vals = [np.concatenate(( [y_vals[a] ], arr[a]) ) for a in range(len(arr) ) ]
-#y_vals = [ y_vals[a] for a in range(len(y_vals )) if str(flags_for_30_min[a])=='1']
-#print(arr[-1])
-        #print("feature length: " + str( len( arr[0] ) ) )
-        #print(arr[0])
 
         ##doing the data first
         #X = [ arr[a] for a in range(len(arr[:size - time_length] ) )  ]
@@ -275,12 +235,6 @@ if __name__ == "__main__":
         for a in vals:
                 X.extend(a[0] )
                 y.extend(a[1] )
-                #for fil in os.listdir('./thredds.cdip.ucsd.edu/thredds/fileServer/cdip/archive/' + stn + 'p1/'):
-                #       if not fil.endswith("historic.nc"):
-                #               print(fil)
-                #               X_tmp, y_tmp = get_data(stn, fil)
-                #               X.extend(X_tmp)
-                #               y.extend(y_tmp)
         print(len(X))
         X = np.array(X)
         y = np.array(y)
