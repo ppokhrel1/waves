@@ -1,7 +1,7 @@
 # waves
 
 
-To use the accurate data, please download it from CDIP website.
+To use the recent data, please download it from CDIP website.
 
 Save the data at thredds.cdip.ucsd.edu/thredds/fileServer/cdip/archive/ . 
 \n

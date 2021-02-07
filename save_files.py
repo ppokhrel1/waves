@@ -8,7 +8,6 @@ from sklearn.utils import parallel_backend
 from pyspark import SparkContext, SparkConf
 from joblibspark import register_spark
 
-#sc = SparkContext(master='spark://nrl-05.cs.uno.edu:7077', appName='spark_features')
 
 register_spark() # register spark backend
 
@@ -118,8 +117,6 @@ import dask
 from joblib import parallel_backend
 from distributed import Client, progress, LocalCluster
 
-#client = Client("137.30.125.208:8786") 
-#client = Client(port = 8999, processes=True)
 def run():
         global time_range
 	#from helpers import helpers
@@ -168,8 +165,6 @@ def run():
                                 X.append(x_val[a])
                                 y.append(y_val[a])
                                 trends.append(trend[a])
-			#X.extend(X_temp[:len(X_temp) - days*24*2])
-			#y.extend([a[0]  for a in y_temp[days*24*2:] ] )
 
 		#timators':[ 100, ], y = X[:50000], y[:50000]
                 
@@ -203,34 +198,6 @@ def run():
                 importances = importances#[: len(importances) - 3]
                 std = np.std([tree.feature_importances_ for tree in grid1.estimators_], axis=0)
                 indices = [a for a in range(len(importances) ) ]
-                #print(importances)
-                #plt.ylabel("Value"")
-                #plt.xlabel("Features")
-                #plt.plot(indices, lgb_train, label = "LightGBM-Train") 
-                #plt.plot(indices, et_train, label = "ET-Train")
-#plt.plot(indices, lr_train, label = "LR")
-
-#plt.title(filename)
-#plt.legend()
-#plt.savefig('plots/'+filename+'_train.png')
-#plt.close()
-#import matplotlib.pyplot as plt
-
-                #plt.bar(indices, lgb_test, label = "Feature Importance")
-                #plt.plot(indices, et_test, label = "ET-Test")
-#plt.plot(indices, lr_test, label = "LR")
-
-                #plt.title(out_file)
-                #X_train = np.array([ a[:len(a)-4] for a in X_train] )
-                #importances = importances[:len(importances)-4]
-                #indices = [a for a in range(len(importances) ) ]
-                #indices_vals = [ "depth", "spread", "Hm0", "Tp", "Ta", "Tz", "psd", "Dp", "skew", "kurt", ]#"year", "month", "day" "time" ]
-                #plt.title("Feature importance for Significant Wave Height")
-                #plt.bar(range(X_train.shape[1] ), importances[indices], color="r", yerr=std[indices], align="center")
-                #plt.xticks(range(X_train.shape[1] ), indices_vals)
-                #plt.xlim([-1, X_train.shape[1] ])
-                #plt.legend()
-                #plt.savefig('feature_importance/'+'hs'+'.png')
 
                 #plt.close()
                 classifiers = {'et': grid1, 'lg': grid2}
@@ -239,40 +206,6 @@ def run():
 
 
 if __name__ == "__main__":
-	#import distributed.joblib  # noqa
-	#from distributed import Client, Worker, Nanny, wait
-	#from dask.distributed import Client, SSHCluster
-	#from sklearn.externals.joblib import Parallel, parallel_backend, register_parallel_backend
-	#from ipyparallel import Client
-	#from ipyparallel.joblib import IPythonParallelBackend
-	
-	#c = Client(profile='ssh')
-	#bview = c.load_balanced_view()
-	#register_parallel_backend('ipyparallel', lambda : IPythonParallelBackend(view=bview))
-	
-	#register_joblib_backend(name='ipyparallel', make_default=False)
-	#cluster = LocalCluster(processes=False)
-	#cluster = SSHCluster(
-	#["localhost", "localhost" ],
-	#connect_options={"known_hosts": None},
-	#worker_options={"nthreads": 10},
-	#)
-	#client = Client(cluster 
-	#	threads_per_worker=4,
-	#	memory_limit='64GB',
-	#	processes=False,
-	#)
-	#from pyspark import SparkContext, SparkConf
-	#import findspark
-	#findspark.init()
-	#from joblibspark.backend import *
-	#from joblibspark import register_spark
-	#from joblibspark import *	
-	
-	#sc = SparkContext(master='spark://137.30.125.205:7077', appName='spark_features')
-	#sc.addPyFile('helpers/helpers.py')	
-	#findspark.init()
-	#register_spark()
 	#with parallel_backend('spark'):
 	run()
 	#client = Client("137.30.125.208:8786")	

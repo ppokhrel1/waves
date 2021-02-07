@@ -96,8 +96,6 @@ def my_custom_loss_func(ground_truth, predictions):
     return np.corrcoef(ground_truth,  predictions)[0,1] 
 
 my_scorer = make_scorer(my_custom_loss_func, greater_is_better=True)
-#client = Client("137.30.125.208:8786") 
-#client = Client(port = 8999, processes=True)
 def run():
   global time_range
   #from helpers import helpers
@@ -131,16 +129,8 @@ def run():
       
       x_val = X_temp
       y_val = y_temp
-
-      #print(len(x_val))
-      #print(len(y_val))
       #x_val = X_temp[:len(X_temp) - int(days*24*2)]
       #y_val = y_temp[int(days*24*2):]
-      
-      #window_size = 4
-      #x_val = [np.ndarray.flatten(np.array(x_val[st-window_size: st]) ) for st in range(window_size, len(x_val)) ]
-      #y_val = y_val[window_size: ]
-
       trend = [0 for a in y_val ]
       #print(len(x_val))
       #print(len(y_val))
@@ -177,11 +167,11 @@ def run():
     grid2 = ExtraTreesRegressor(random_state=100, max_depth=None, n_jobs=1)
     grid3 = DecisionTreeRegressor()
     grids = [('lgb', grid1),('et', grid2), ]#('dt', grid3) ]
-    param2 = {'n_estimators':[ 100, ],#200, 300, 400, 500],# 170, 220, 260,  350,  450,  550,  650, 700, 800 ],
+    param2 = {'n_estimators':[ 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],# 170, 220, 260,  350,  450,  550,  650, 700, 800 ],
       'min_samples_split':[2, 5, 10, 15, 25, 35, 45, 55, 65],
       'min_samples_leaf':[100, 150, 200, 250, 300, 350, 400, 450, 500],
       }
-    param1 = { 'n_estimators':[ 100, ],#200, 400, 500, 600], # 130, 200,  320, 370, 470, 540, 600, 700,  ],
+    param1 = { 'n_estimators':[ 100, 200, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200], # 130, 200,  320, 370, 470, 540, 600, 700,  ],
       'num_leaves':[ 100, 150, 200, 250, 300, 350, 400, 450, 500, 750, 1000, ], #5, 10, 15, 20, 30, 40, 50, 60, 70, 90, 120, 130],
       'min_child_samples':[ 5, 10, 20, 30, 50, 75, 100, 150, 200,],    
       }
@@ -219,12 +209,8 @@ def run():
         #  param = {'n_estimators': [100, 150, 200, 250, 300, 350, 400, 450, 500, ], }
         #  grid = GridSearchCV( grid, param, scoring='r2', n_jobs=1, cv=3 )  
         #else:
-        param = {'n_estimators': 500, 'n_jobs': -1}
+        #param = {'n_estimators': 500, 'n_jobs': -1}
         grid.set_params(**param)  
-        #grid = GridSearchCV( grid, param, scoring='r2', n_jobs=-1, cv=3)
-        #grid.fit(X, y )
-        #print("best score: "+ str(grid.best_score_) + " best params: "+ str(grid.best_params_) )
-        #grid = grid.best_estimator_
       #else:
       #  print("best score: "+ str(grid.best_score_) + " best params: "+ str(grid.best_params_) )
       predicted_1 = Parallel(n_jobs=-1)(delayed(get_test)(grid, X_train[train], y_train[train], X_train[test] ) for train,test in my_f.split(X_train, y_train) )          
@@ -288,42 +274,7 @@ def run():
 
 
 if __name__ == "__main__":
-  #import distributed.joblib  # noqa
-  #from distributed import Client, Worker, Nanny, wait
-  #from dask.distributed import Client, SSHCluster
-  #from sklearn.externals.joblib import Parallel, parallel_backend, register_parallel_backend
-  #from ipyparallel import Client
-  #from ipyparallel.joblib import IPythonParallelBackend
-  
-  #c = Client(profile='ssh')
-  #bview = c.load_balanced_view()
-  #register_parallel_backend('ipyparallel', lambda : IPythonParallelBackend(view=bview))
-  
-  #register_joblib_backend(name='ipyparallel', make_default=False)
-  #cluster = LocalCluster(processes=False)
-  #cluster = SSHCluster(
-  #["localhost", "localhost" ],
-  #connect_options={"known_hosts": None},
-  #worker_options={"nthreads": 10},
-  #)
-  #client = Client(cluster 
-  #  threads_per_worker=4,
-  #  memory_limit='64GB',
-  #  processes=False,
-  #)
-  #from pyspark import SparkContext, SparkConf
-  #import findspark
-  #findspark.init()
-  #from joblibspark.backend import *
-  #from joblibspark import register_spark
-  #from joblibspark import *  
-  
-  #sc = SparkContext(master='spark://137.30.125.205:7077', appName='spark_features')
-  #sc.addPyFile('helpers/helpers.py')  
-  #findspark.init()
-  #register_spark()
   #with parallel_backend('spark'):
   run()
-  #client = Client("137.30.125.208:8786")  
 
 
