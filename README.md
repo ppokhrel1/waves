@@ -13,5 +13,7 @@ How to train the ml algorithms.
 4) Run `python test.py filename` to run testing on the data. Note that the data should be in CDIP format for now.
 
 
+Please cite Pujan Pokhrel, Elias Ioup, Md Tamjidul Hoque, Mahdi Abdelguerfi, Julian Simeonov, "Forecasting significant wave heights in oceanic waters", 2021, SigKDD.
+
 Thanks,
 Enjoy
