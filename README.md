@@ -16,7 +16,7 @@ How to train the ml algorithms.
 
 Please cite:
 
-`Pujan Pokhrel, Elias Ioup, Md Tamjidul Hoque, Mahdi Abdelguerfi, Julian Simeonov, "Forecasting significant wave heights in oceanic waters", 2021, SigKDD.
+`Pujan Pokhrel, Elias Ioup, Md Tamjidul Hoque, Mahdi Abdelguerfi, Julian Simeonov, "Forecasting significant wave heights in oceanic waters", 2021, Arxiv.
 `
 
 Thanks,
